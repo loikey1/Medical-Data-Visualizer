@@ -14,6 +14,7 @@ df['overweight'] = (bmi > 25).astype('uint8')
 df['gluc'] = (df['gluc'] != 1).astype('uint8')
 df['cholesterol'] = (df['cholesterol'] != 1).astype('uint8')
 
+
 #-----------------------------------------------------------
 # Draw Categorical Plot
 def draw_cat_plot():
@@ -51,7 +52,7 @@ def draw_cat_plot():
 #-----------------------------------------------------------
 # Draw Heat Map
 def draw_heat_map():
-    # Đọc dữ liệu
+    # Read data
     df = pd.read_csv('medical_examination.csv')
 
     # Thêm cột overweight
@@ -61,7 +62,7 @@ def draw_heat_map():
     df['cholesterol'] = df['cholesterol'].apply(lambda x: 1 if x > 1 else 0)
     df['gluc'] = df['gluc'].apply(lambda x: 1 if x > 1 else 0)
 
-    # Lọc dữ liệu
+    # Filter data
     df_heat = df[
         (df['ap_lo'] <= df['ap_hi']) &
         (df['height'] >= df['height'].quantile(0.025)) &
@@ -70,13 +71,13 @@ def draw_heat_map():
         (df['weight'] <= df['weight'].quantile(0.975))
     ]
 
-    # Tạo ma trận tương quan
+    # Create correlation matrix
     corr = df_heat.corr()
 
-    # Mask cho tam giác trên
+    # Mask for upper triangle
     mask = np.triu(np.ones_like(corr, dtype=bool))
 
-    # Vẽ heatmap
+    # Draw heatmap
     fig, ax = plt.subplots(figsize=(12, 12))
     sns.heatmap(
         corr,
